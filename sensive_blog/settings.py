@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debug_toolbar',
+    'django_extensions',
 
     'blog',
 ]
@@ -37,7 +38,7 @@ MIDDLEWARE = [
 ]
 
 INTERNAL_IPS = [
-    '127.0.0.1',    
+    '127.0.0.1',
 ]
 
 ROOT_URLCONF = 'sensive_blog.urls'
