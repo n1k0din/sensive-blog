@@ -37,7 +37,6 @@ def index(request):
     popular_posts = sorted(posts, key=get_likes_count)
     most_popular_posts = popular_posts[-5:]
 
-
     fresh_posts = Post.objects.order_by('published_at')
     most_fresh_posts = list(fresh_posts)[-5:]
 
