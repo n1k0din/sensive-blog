@@ -1,5 +1,7 @@
 from django.db.models import Count, Prefetch
+from django.http import Http404
 from django.shortcuts import render
+
 
 from blog.models import Post, Tag
 
@@ -58,10 +60,14 @@ def index(request):
 
 def post_detail(request, slug):
 
-    post = Post.objects\
-        .prefetch_related('author', get_tags_prefetch())\
-        .annotate(likes_count=Count('likes'))\
-        .get(slug=slug)
+    try:
+        post = Post.objects\
+            .prefetch_related('author', get_tags_prefetch())\
+            .annotate(likes_count=Count('likes'))\
+            .get(slug=slug)
+    except Post.DoesNotExist:
+        raise Http404('Post does not exist, sorry')
+
     comments = post.post_comments.prefetch_related('author').all()
     serialized_comments = []
     for comment in comments:
@@ -103,7 +109,10 @@ def post_detail(request, slug):
 
 def tag_filter(request, tag_title):
 
-    tag = Tag.objects.get(title=tag_title)
+    try:
+        tag = Tag.objects.get(title=tag_title)
+    except Tag.DoesNotExist:
+        raise Http404('Tag does not exist, sorry')
 
     tags = Tag.objects.popular()
 
