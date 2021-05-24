@@ -59,7 +59,7 @@ def index(request):
 def post_detail(request, slug):
 
     post = Post.objects\
-        .prefetch_related(get_tags_prefetch())\
+        .prefetch_related('author', get_tags_prefetch())\
         .annotate(likes_count=Count('likes'))\
         .get(slug=slug)
     comments = post.post_comments.prefetch_related('author').all()
